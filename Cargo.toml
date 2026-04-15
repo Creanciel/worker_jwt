@@ -1,0 +1,25 @@
+[package]
+name = "worker_jwt"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/Creanciel/worker_jwt"
+authors = ["Creanciel"]
+description = "JWT generation for wasm runtimes (Cloudflare Workers, Deno, browsers) backed by the Web Crypto API"
+keywords = ["jwt", "wasm", "cloudflare-workers", "web-crypto", "jose"]
+categories = ["authentication", "cryptography", "wasm"]
+
+[features]
+default = []
+full = ["github", "google"]
+github = []
+google = []
+
+[dependencies]
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.149"
+wasm_web_crypto = { version = "0.1.0", features = ["sign", "key"] }
+
+[target.'cfg(all(target_arch = "wasm32", target_os = "unknown"))'.dependencies]
+js-sys = "0.3"
