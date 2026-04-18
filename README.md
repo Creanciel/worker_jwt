@@ -33,9 +33,11 @@ let jwt: String = signer.sign(&claims).await?;
 
 Key format expected by `JwtSigner::new`:
 
-- `Rs256` / `Es256` — PKCS#8 PEM (`-----BEGIN PRIVATE KEY-----`).
-  Convert legacy PKCS#1 / SEC1 PEMs with:
-  `openssl pkcs8 -topk8 -nocrypt -in in.pem -out out.pem`
+- `Rs256` — PKCS#8 PEM (`-----BEGIN PRIVATE KEY-----`) or PKCS#1 PEM
+  (`-----BEGIN RSA PRIVATE KEY-----`). GitHub App private keys ship as
+  PKCS#1 and are accepted as-is.
+- `Es256` — PKCS#8 PEM only. Convert SEC1 PEMs with
+  `openssl pkcs8 -topk8 -nocrypt -in in.pem -out out.pem`.
 - `Hs256` — raw shared-secret bytes.
 
 Importing the key is the expensive step; one `JwtSigner` can `sign` any number of times.

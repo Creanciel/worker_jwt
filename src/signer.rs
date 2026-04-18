@@ -98,10 +98,12 @@ impl JwtSigner {
     ///
     /// The expected format of `key_data` depends on the algorithm:
     ///
-    /// - [`Algorithm::Rs256`], [`Algorithm::Es256`]: PKCS#8 PEM bytes
-    ///   (`-----BEGIN PRIVATE KEY-----` / `-----END PRIVATE KEY-----`).
-    ///   Legacy PKCS#1 (`RSA PRIVATE KEY`) and SEC1 (`EC PRIVATE KEY`) PEMs
-    ///   are rejected; convert them with
+    /// - [`Algorithm::Rs256`]: PKCS#8 PEM
+    ///   (`-----BEGIN PRIVATE KEY-----`) or PKCS#1 PEM
+    ///   (`-----BEGIN RSA PRIVATE KEY-----`). GitHub App private keys ship
+    ///   as PKCS#1 and are accepted without conversion.
+    /// - [`Algorithm::Es256`]: PKCS#8 PEM only. Convert SEC1 PEMs
+    ///   (`-----BEGIN EC PRIVATE KEY-----`) with
     ///   `openssl pkcs8 -topk8 -nocrypt -in in.pem -out out.pem` first.
     /// - [`Algorithm::Hs256`]: raw shared-secret bytes.
     ///
